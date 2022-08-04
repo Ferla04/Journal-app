@@ -1,21 +1,51 @@
 import { Link as RouterLink } from 'react-router-dom'
 import { Button, Grid, Link, TextField, Typography } from '@mui/material'
-import { Google } from '@mui/icons-material'
 import { AuthLayout } from '../layout/AuthLayout'
+import { useForm } from '../../hooks'
+
+const formData = {
+  displayName: '',
+  email: '',
+  password: ''
+}
+
+const formValidations = {
+  displayName: [ ( value ) => value.length >= 1, 'El nombre es obligatorio.' ],
+  email: [ ( value ) => value.includes('@'), 'El correo debe de tener un @.' ],
+  password: [ ( value ) => value.length >= 6, 'El password debe de tener más de 6 letras.' ]
+}
 
 export const RegisterPage = () => {
+
+  const { 
+    formState, displayName, email, password, onInputChange,
+    isFormValid, displayNameValid, emailValid, passwordValid 
+  } = useForm( formData, formValidations )
+
+  console.log( displayNameValid )
+
+  const onSubmit = ( event ) => {
+    event.preventDefault()
+    console.log( formState )
+  }
+
   return (
     
     <AuthLayout title='Crear cuenta'>
-        <form>
+        <form onSubmit={ onSubmit }>
           <Grid container>
 
             <Grid item xs={ 12 } sx={{ mt: 2 }}>
               <TextField 
                 label='Nombre Completo' 
-                type='email' 
+                type='text' 
                 placeholder='Tu nombre'
                 fullWidth
+                name='displayName'
+                value={ displayName }
+                onChange={ onInputChange }
+                error={ !displayNameValid }
+                helperText={ displayNameValid }
               />
             </Grid>
 
@@ -25,6 +55,9 @@ export const RegisterPage = () => {
                 type='email' 
                 placeholder='correo@goggle.com'
                 fullWidth
+                name='email'
+                value={ email }
+                onChange={ onInputChange }
               />
             </Grid>
 
@@ -34,12 +67,15 @@ export const RegisterPage = () => {
                 type='password' 
                 placeholder='Contraseña'
                 fullWidth
+                name='password'
+                value={ password }
+                onChange={ onInputChange }
               />
             </Grid>
 
             <Grid container spacing={ 2 } sx={{ mb: 2, mt: 1 }}>
               <Grid item xs={ 12 }>
-                <Button variant='contained' fullWidth>
+                <Button type='submit' variant='contained' fullWidth>
                   Crear cuenta
                 </Button> 
               </Grid>
