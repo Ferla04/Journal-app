@@ -8,7 +8,11 @@ export const useForm = ( initialForm = {}, formValidations = {} ) => {
   useEffect(() => {
     createValidators()
   }, [ formState ])
-  
+
+  useEffect(() => {             // --> AGREGADO: al enviar la initalform tenemos  
+    setFormState( initialForm ) // que estar seguros que el objeto que se envia 
+  }, [ initialForm ])           // tenga la misma referencia en memoria, si no es asi
+                                // se generará un ciclo infinito
 
   const isFormValid = useMemo(() => {
 
