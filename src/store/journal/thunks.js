@@ -1,7 +1,7 @@
 import { collection, doc, setDoc } from 'firebase/firestore/lite';
 import { FirebaseDB } from '../../firebase/config';
-import { loadNotes } from '../../helpers';
-import { addNewEmptyNote, setActiveNote, savingNewNote, setNotes, setSaving, updateNote } from './';
+import { fileUpload, loadNotes } from '../../helpers';
+import { addNewEmptyNote, setActiveNote, savingNewNote, setPhotosToActiveNote, setNotes, setSaving, updateNote } from './';
 
 export const startNewNote = () => {
   return async ( dispatch, getState ) => {
@@ -55,6 +55,24 @@ export const startSaveNote = () => {
                               //en la tabla que modificamos aunque no se envien
 
     dispatch( updateNote( note ) )
+
+  }
+}
+
+
+export const startUploadingFiles = ( files = [] ) => {
+  return async ( dispatch ) => {
+    dispatch( setSaving() )
+
+    const fileUploadPromises = [] //--> Array de promesas
+
+    for( const file of files ){
+      fileUploadPromises.push( fileUpload( file ) )
+    }
+
+    const photosUrls = await Promise.all( fileUploadPromises ) // --> Resulve todas la promesas
+
+    dispatch( setPhotosToActiveNote( photosUrls ) )
 
   }
 }
