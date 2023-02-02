@@ -1,5 +1,6 @@
 {
   "name": "journal-app",
+  "homepage": "https://ferla04.github.io/Journal-app",
   "private": true,
   "version": "0.0.0",
   "type": "module",
