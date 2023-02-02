@@ -3,18 +3,19 @@ import { FirebaseDB } from '../../firebase/config';
 import { fileUpload, loadNotes } from '../../helpers';
 import { addNewEmptyNote, deleteNoteById, setActiveNote, savingNewNote, setPhotosToActiveNote, setNotes, setSaving, updateNote } from './';
 
+const newNote = {
+  title: '',
+  body: '',
+  date: new Date().getTime(),
+  imageUrls: []
+}
+
 export const startNewNote = () => {
   return async ( dispatch, getState ) => {
 
     dispatch( savingNewNote() )
 
     const { uid } = getState().authStore
-    const newNote = {
-      title: '',
-      body: '',
-      date: new Date().getTime(),
-      imageUrls: []
-    }
 
     const newDoc = doc( collection( FirebaseDB, `${ uid }/journal/notes` ) )
     await setDoc( newDoc, newNote )
