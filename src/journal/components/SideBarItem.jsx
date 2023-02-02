@@ -12,11 +12,6 @@ export const SideBarItem = ({ title = '', body, id, date, imageUrls = [] }) => {
     dispatch( setActiveNote({ title, body, id, date, imageUrls }) )
   }
 
-  const newTitle = useMemo( () => {
-    return title.length > 17 
-      ? title.substring( 0, 17 ) + '...'
-      : title
-  }, [ title ])
 
   return (
     <ListItem disablePadding>
@@ -26,8 +21,8 @@ export const SideBarItem = ({ title = '', body, id, date, imageUrls = [] }) => {
         </ListItemIcon>
 
         <Grid container>
-          <ListItemText primary={ newTitle }/>
-          <ListItemText secondary={ body }/>
+          <ListItemText primary={ title } className='barItem' />
+          <ListItemText secondary={ body } className='barItem'/>
         </Grid>
       </ListItemButton>
     </ListItem>
